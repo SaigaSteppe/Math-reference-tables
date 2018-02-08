@@ -8,7 +8,7 @@
 #define UPPER_LIMIT_PRIME 1000
 
 //PROTOTYPES
-void initialiseArrays(int tableArray[TABLE_SIZE][TABLE_SIZE], int a1[MAX_DECIMAL_NUMBER]);
+void initialise(int tableArray[TABLE_SIZE][TABLE_SIZE], int a1[MAX_DECIMAL_NUMBER]);
 void printTable(int a[TABLE_SIZE][TABLE_SIZE]);
 void polygonSideAngles();
 void printBinDecHex();
@@ -20,11 +20,12 @@ void runEratosthenes(int upperBound, int primes[]);
 int i, j;
 int tableArray[TABLE_SIZE][TABLE_SIZE];
 int a1[MAX_DECIMAL_NUMBER];
+int primes[UPPER_LIMIT_PRIME];
 
 int main(void) {
 	int userChoice;
-	char menu[] = "\nEnter a selection or enter -1 to exit: \n[1] Multiplication Table  (20 x 20) \n[2] Interior Angle of Regular Polygons  \n[3] Binary, Decimal, Hexidecimal Table \n[4] Prime Numbers Less than 1000 \n";
-	initialiseArrays(tableArray, a1);
+	char menu[] = "\nEnter a selection or enter [-1] to exit: \n[1] Multiplication Table  (20 x 20) \n[2] Interior Angle of Regular Polygons  \n[3] Binary, Decimal, Hexidecimal Table \n[4] Prime Numbers Less than 1000 \n";
+	initialise(tableArray, a1);
 
 	printf("MATH REFERENCE TABLES\n\n");
 	printf("%s", menu);
@@ -69,9 +70,9 @@ int main(void) {
 	return 0;
 }
 
-void initialiseArrays(int tableArray[TABLE_SIZE][TABLE_SIZE], int a1[MAX_DECIMAL_NUMBER]) {
+void initialise(int tableArray[TABLE_SIZE][TABLE_SIZE], int a1[MAX_DECIMAL_NUMBER]) {
 	//initialise tableArray
-	for (size_t i = 1;  i <= TABLE_SIZE; i++) {
+	for (size_t i = 1; i <= TABLE_SIZE; i++) {
 		for (size_t j = 1; j <= TABLE_SIZE; j++) {
 			tableArray[i][j] = i;
 		}
@@ -82,15 +83,18 @@ void initialiseArrays(int tableArray[TABLE_SIZE][TABLE_SIZE], int a1[MAX_DECIMAL
 		a1[i] = i;
 	}
 
+	//initialise prime numbers
+	runEratosthenes(UPPER_LIMIT_PRIME, primes); //use the sieve of Eratosthenes to find prime numbers
+
 }
 
 void printTable(int tableArray[TABLE_SIZE][TABLE_SIZE]) {
 	printf("MULTIPLICATION TABLE (20 X 20)\n\n");
 
 	//print coloumn header
-	printf("%4c %2d",'|',1);
+	printf("%4c %2d", '|', 1);
 	for (int k = 2; k <= TABLE_SIZE; k++) {
-		printf("%4d",k);
+		printf("%4d", k);
 	}
 	printf("\n-----------------------------------------------------------------------------------\n");
 
@@ -161,10 +165,10 @@ void runEratosthenes(int upperBound, int primes[]) {
 
 	primes[0] = 0, primes[1] = 0;// set 0 and 1 to 0 (false)
 
-	//set the multiples of i to 0 (false)
+								 //set the multiples of i to 0 (false)
 	for (i = 2; i < sqrt(upperBound); i++) {
 		for (j = i * i; j < upperBound; j += i) {
-			primes[j] = 0; 
+			primes[j] = 0;
 		}
 	}
 }
